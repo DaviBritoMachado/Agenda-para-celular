@@ -1,16 +1,20 @@
-# cool_agenda
+# Projeto de Agenda para Android
 
 A new Flutter project.
 
-## Getting Started
+## Descrição do Projeto
 
-This project is a starting point for a Flutter application.
+Este projeto consiste no desenvolvimento de uma aplicação para Android com o framework Flutter.
 
-A few resources to get you started if this is your first Flutter project:
+A proposta da aplicação é ser uma agenda onde o usuário possa acessar um calendário e marcar eventos nela com base no dia.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Funcionalidades
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+-Inserção de eventos no calendário
+-Customização da agenda
+
+## Tecnologias e Ferramentas
+
+-Dart
+-Flutter
+
