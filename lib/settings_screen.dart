@@ -10,7 +10,7 @@ class SettingsScreen extends StatelessWidget {
     return Consumer<ThemeProvider>(
       builder: (context, themeProvider, child) {
         return Scaffold(
-          backgroundColor: themeProvider.primaryColor.withOpacity(0.15),
+          backgroundColor: themeProvider.primaryColor.withAlpha(60),
           appBar: AppBar(
             title: const Text('Configurações'),
             backgroundColor: Theme.of(context).colorScheme.inversePrimary,
@@ -24,6 +24,7 @@ class SettingsScreen extends StatelessWidget {
                   'Escolha o tema do aplicativo:',
                   style: TextStyle(
                     fontSize: 20,
+                    color: Colors.white,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -54,10 +55,10 @@ class SettingsScreen extends StatelessWidget {
                         },
                         child: Container(
                           decoration: BoxDecoration(
-                            color: themeColor.withOpacity(0.15),
+                            color: themeColor.withAlpha(60),
                             borderRadius: BorderRadius.circular(12),
                             border: Border.all(
-                              color: isSelected ? themeColor : Colors.grey.withOpacity(0.3),
+                              color: isSelected ? themeColor : Colors.grey.withAlpha(60),
                               width: isSelected ? 3 : 1,
                             ),
                           ),
@@ -72,7 +73,7 @@ class SettingsScreen extends StatelessWidget {
                                   shape: BoxShape.circle,
                                   boxShadow: [
                                     BoxShadow(
-                                      color: themeColor.withOpacity(0.3),
+                                      color: themeColor.withAlpha(60),
                                       blurRadius: 8,
                                       spreadRadius: 2,
                                     ),
@@ -108,10 +109,10 @@ class SettingsScreen extends StatelessWidget {
                   width: double.infinity,
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.8),
+                    color: Colors.white.withAlpha(60),
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(
-                      color: themeProvider.primaryColor.withOpacity(0.3),
+                      color: themeProvider.primaryColor.withAlpha(60),
                     ),
                   ),
                   child: Column(

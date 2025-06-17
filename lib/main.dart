@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:cool_agenda/utils.dart';
 import 'package:cool_agenda/theme_provider.dart';
 import 'package:cool_agenda/settings_screen.dart';
+import 'package:cool_agenda/event_description.dart';
 
 void main() {
   initializeDateFormatting("pt_BR", null).then((_) => runApp(const MyApp()));
@@ -32,16 +33,6 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
   final String title;
 
   @override
@@ -51,6 +42,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   DateTime selectedDay = DateTime.now();
   TextEditingController _eventController = TextEditingController();
+  TextEditingController _descriptionController = TextEditingController();
   late ValueNotifier<List<Event>> _selectedEvents;
 
   @override
@@ -66,8 +58,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   List<Event> _getEventsForDay(DateTime day) {
-    // Implementation example
-    return kEvents[day] ?? [];
+    return events[day] ?? [];
   }
 
   void _onDaySelected(DateTime day, DateTime focusedDay){
@@ -83,10 +74,11 @@ class _MyHomePageState extends State<MyHomePage> {
     return Consumer<ThemeProvider>(
       builder: (context, themeProvider, child) {
         return Scaffold(
-          backgroundColor: themeProvider.primaryColor.withOpacity(0.15),
+          backgroundColor: themeProvider.primaryColor.withAlpha(60),
           appBar: AppBar(
             backgroundColor: Theme.of(context).colorScheme.inversePrimary,
             title: Text(widget.title),
+            centerTitle: true,
             actions: [
               IconButton(
                 icon: const Icon(Icons.settings),
@@ -108,21 +100,45 @@ class _MyHomePageState extends State<MyHomePage> {
                 builder: (context) {
                   return AlertDialog(
                     scrollable: true,
-                    title: Text("Nome do Evento"),
+                    title: Text("Novo Evento"),
                     content: Padding(
                         padding: EdgeInsets.all(8),
-                        child: TextField(
-                          controller: _eventController,
+                        child: Column(
+                          children: [
+                            TextField(
+                              controller: _eventController,
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: 'Nome do evento',
+                                )
+                            ),
+                            SizedBox(height: 16,),
+                            TextField(
+                              controller: _descriptionController,
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(),
+                                labelText: 'Descrição do evento',
+                              ),
+                              maxLines: null,
+                            )
+                          ],
                         )
                     ),
                     actions: [
                       ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            events.addAll({selectedDay: [Event(_eventController.text, _descriptionController.text)]});
+                            Navigator.of(context).pop();
+                            _selectedEvents.value = _getEventsForDay(selectedDay);
+                            _eventController.clear();
+                            _descriptionController.clear();
+                          },
                           child: Text("Salvar"))
                     ],
                   );
                 });
-            }
+            },
+              child: const Icon(Icons.add),
           ),
           body: content(),
         );
@@ -134,11 +150,11 @@ class _MyHomePageState extends State<MyHomePage> {
       padding: const EdgeInsets.all(20.0),
       child: Column(
         children: [
-          Text("Dia selecionado: " + selectedDay.toString().split(" ")[0]),
+          //Text("Dia selecionado: " + selectedDay.toString().split(" ")[0]),
           Container(
             child: TableCalendar(
               locale: "pt_BR",
-              headerStyle: HeaderStyle(formatButtonVisible: false, titleCentered: true),
+              headerStyle: HeaderStyle(formatButtonVisible: false, titleCentered: true, titleTextStyle:TextStyle(fontSize: 18, color: Colors.white),),
               availableGestures: AvailableGestures.all,
               rowHeight: 43,
               eventLoader: _getEventsForDay,
@@ -147,6 +163,12 @@ class _MyHomePageState extends State<MyHomePage> {
               focusedDay: selectedDay,
               firstDay: kFirstDay,
               lastDay: kLastDay,
+              calendarStyle: CalendarStyle(
+                defaultTextStyle:TextStyle(color: Colors.white),
+                weekNumberTextStyle:TextStyle(color: Colors.white),
+                weekendTextStyle:TextStyle(color: Colors.white),
+
+              ),
             )
           ),
           const SizedBox(height: 8.0),
@@ -157,18 +179,33 @@ class _MyHomePageState extends State<MyHomePage> {
                 return ListView.builder(
                   itemCount: value.length,
                   itemBuilder: (context, index) {
+                    final event = value[index];
                     return Container(
                       margin: const EdgeInsets.symmetric(
                         horizontal: 12.0,
                         vertical: 4.0,
                       ),
                       decoration: BoxDecoration(
-                        border: Border.all(),
+                        border: Border.all(color: Colors.white, width: 1.5),
                         borderRadius: BorderRadius.circular(12.0),
                       ),
                       child: ListTile(
-                        onTap: () => print('${value[index]}'),
-                        title: Text('${value[index]}'),
+                        onTap: () => //print('${value[index]}'),
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Description(
+                              nome: event.title,
+                              description: event.description,
+                            ),
+                          ),
+                        ),
+                        title: Text(event.title,
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.white, // Cor do texto
+                        )
+                      ),
                       ),
                     );
                   },
