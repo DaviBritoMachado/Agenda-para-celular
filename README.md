@@ -5,6 +5,8 @@
 
 Um aplicativo de agenda simples e intuitivo desenvolvido em Flutter, projetado para ajudar você a organizar seus eventos e compromissos diários de forma eficiente. Com uma interface limpa e funcionalidades essenciais, o Cool Agenda torna o gerenciamento da sua rotina mais fácil e agradável.
 
+Integrantes do projeto: DAVI BRITO MACHADO, DJALMA FELIPE DE SOUSA NETO e HILTON MEDEIROS AMORIM
+
 ## ✨ Funcionalidades
 
 - **Visualização de Calendário**: Navegue facilmente pelos dias, semanas e meses com um calendário interativo.
